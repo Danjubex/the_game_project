@@ -7,4 +7,4 @@ The software controls the history and evolution of <b> Players </b> through <b> 
 or may not have rewards, <b> NPC's </b> are the Stakeholders who can help with information valuable to the success of the adventure.  
 
 <h2>Join the Party!</h2>
-There is a lot more to be developed to make the project management step something natural and fun.
+There is a lot more to be developed to make the Project Management step something natural and fun.
