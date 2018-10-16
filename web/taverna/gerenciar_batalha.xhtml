@@ -1,0 +1,80 @@
+ <ui:composition template="template.xhtml"
+                 xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:ui="http://java.sun.com/jsf/facelets">
+ 
+ <ui:define name="corpo-central">
+     <p:fieldset legend="Minhas Batalhas (#{controle_batalha.aventura.nome})" style="margin-bottom:20px">
+	<h:form style="padding: 20px;" id="form">
+
+            <p:growl id="mensagem_cadastro" life="5000" showDetail="true" /> 
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+            Aventura Inicia em: 
+            <h:outputText style="font-weight:bold;color:#{controle_batalha.initColorControl(controle_batalha.aventura.data_inicio)}" 
+                                  value="#{controle_batalha.aventura.data_inicio}">
+                      <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                    </h:outputText> 
+            termina em:                            
+                    <h:outputText style="font-weight:bold;color:#{controle_batalha.endColorControl(controle_batalha.aventura.data_finalizacao)}" 
+                                  value="#{controle_batalha.aventura.data_finalizacao}">
+                      <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                    </h:outputText>  
+            <p:dataTable var="batalha" value="#{controle_batalha.batalhas}">
+                <p:column headerText="Nome" sortBy="#{batalha.nome}">
+                    <h:outputText value="#{batalha.nome}" />
+                </p:column>
+                <p:column headerText="Início" sortBy="#{batalha.data_inicio}">
+                    <h:outputText style="font-weight:bold;color:#{controle_batalha.initColorControl(batalha.data_inicio)}" 
+                                  value="#{batalha.data_inicio}">
+                        <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+
+                </p:column>
+                <p:column headerText="Fim" sortBy="#{batalha.data_finalizacao}">
+                    <h:outputText value="#{batalha.data_finalizacao}" 
+                                  style="font-weight:bold;color:#{controle_batalha.endColorControl(batalha.data_finalizacao)}">
+                        <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Pontos de Batalha" sortBy="#{batalha.pontos_de_balalha}">
+                    <h:outputText value="#{batalha.pontos_de_balalha}" />
+                </p:column>                
+                <p:column headerText="Status" sortBy="#{batalha.estado.nome}">
+                    <h:outputText value="#{batalha.estado.nome}" />
+                </p:column>
+                                
+                <p:column headerText="Ações">
+                    <p:commandButton 
+                                        rendered="#{batalha.estado.nome.equals('ATIVA')}"    
+                                        actionListener="#{controle_batalha.concluirBatalha(batalha)}" 
+                                        update="form north"
+                                        oncomplete="window.location.replace(window.location.href);"
+                                        value="Concluir" 
+                                        title="Concluir" >
+                      <p:confirm header="Tem certeza?" message="Você realmente deseja concluir essa batalha?" icon="ui-icon-alert" />
+      
+                    </p:commandButton>
+                        <p:commandButton rendered="#{!batalha.estado.nome.equals('CANCELADA')}"
+                                        update="form"
+                                        actionListener="#{controle_batalha.excluirBatalha(batalha)}" 
+                                        value="Excluir" title="Excluir" >
+                                                  <p:confirm header="Tem certeza?" message="Você realmente deseja cancelar essa batalha?" icon="ui-icon-alert" />
+      
+                    </p:commandButton>
+                        
+                    
+                </p:column>
+                
+            </p:dataTable>
+            
+            
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+	</h:form>
+    </p:fieldset>
+</ui:define>
+</ui:composition>

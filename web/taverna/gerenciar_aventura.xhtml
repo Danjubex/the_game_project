@@ -1,0 +1,123 @@
+ <ui:composition template="template.xhtml"
+                 xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:ui="http://java.sun.com/jsf/facelets">
+ 
+ <ui:define name="corpo-central">
+     <p:fieldset legend="Minhas Aventuras" style="margin-bottom:20px">
+	<h:form style="padding: 20px;" id="form">
+
+            <p:growl id="mensagem_cadastro" life="5000" showDetail="true" /> 
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+
+            <p:fieldset legend="Minhas Aventuras Ativas" 
+                        style="margin-bottom:20px">
+                <p:accordionPanel id="tabs" value="#{controle_busca_aventura.aventuras}" var="aventura" >
+
+                    <p:tab disabled="#{!controle_busca_aventura.checkJoined(aventura) or !controle_busca_aventura.isUnfinished(aventura)}" 
+                           rendered="#{controle_busca_aventura.checkJoined(aventura) and controle_busca_aventura.isUnfinished(aventura)}"
+                                title="#{aventura.nome}">
+                            <div style="margin-bottom: 20px;">
+                                inicia em: 
+                                <h:outputText style="font-weight:bold;color:#{controle_busca_aventura.initColorControl(aventura.data_inicio)}" value="#{aventura.data_inicio}">
+                                  <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                                </h:outputText> 
+                                termina em:                            
+                                <h:outputText style="font-weight:bold;color:#{controle_busca_aventura.endColorControl(aventura.data_finalizacao)}"  value="#{aventura.data_finalizacao}">
+                                  <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                                </h:outputText>     
+                            </div>
+                            Heróis da Aventura: 
+                                <div style="display:inline;font-weight: bold;font-size: 30px;">
+                                                    #{controle_busca_aventura.getAventureiros(aventura)}
+                                </div>                            
+                            <div style="margin-bottom: 4px;">
+                                Dias Corridos: <div style="display:inline;font-weight: bold;font-size: 30px;">#{controle_busca_aventura.daysSinceStart(aventura)}</div>
+                            </div> 
+                            <div style="margin-bottom: 20px;">
+                                Dias Restantes: <div style="display:inline;font-weight: bold;font-size: 30px;">#{controle_busca_aventura.daysLeft(aventura)}</div>
+                            </div> 
+                            
+                            
+                               
+     <p:commandButton value="Concluir" 
+                      rendered="#{controle_busca_aventura.checkJoined(aventura)  and controle_busca_aventura.canComplete()}" 
+                      id="concluir" 
+                      update="form"
+                      action="#{controle_busca_aventura.concluirAventura(aventura)}"
+                      style="background:#050!important;">
+         <p:confirm header="Tem certeza?" message="A aventura realmente foi concluída?" icon="ui-icon-alert" />
+     </p:commandButton>              
+     <p:commandButton value="Criar Batalha" 
+                      rendered="#{controle_busca_aventura.checkJoined(aventura)}" 
+                      id="create_battle"
+                      oncomplete="PF('batalha_dlg').show();"
+                      immediate="false"
+                      action="#{controle_busca_aventura.setCurrentAventura(aventura)}"
+                      update="form_batalha"
+                      style="background:#005!important;">
+         <f:setPropertyActionListener value="#{aventura}" target="#{controle_busca_aventura.currentAventura}" />
+       
+     </p:commandButton>   
+     <p:commandButton value="Ver Batalhas" 
+                      rendered="#{controle_busca_aventura.checkJoined(aventura)}"
+                      id="ver_batalhas"
+                       action="#{controle_batalha.change}"
+                      style="background:#909!important;" >
+         <f:setPropertyActionListener target="#{controle_batalha.aventura}" value="#{aventura}" />
+     </p:commandButton>
+      <p:commandButton value="Abandonar" 
+                      rendered="#{controle_busca_aventura.checkJoined(aventura)}" 
+                      id="leave" 
+                      update="form" 
+                      action="#{controle_busca_aventura.leftAventura(aventura)}"
+                      style="background:#900!important;" >
+        <p:confirm header="Tem certeza?" message="Você realmente deseja abandonar essa aventura?" icon="ui-icon-alert" />
+      </p:commandButton> 
+ 
+
+                        </p:tab>
+                    
+                </p:accordionPanel>   
+                
+            
+            </p:fieldset>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                 </p:confirmDialog>
+	</h:form>
+         <h:form id="form_batalha">
+             <p:dialog header="Criar batalha" dynamic="true" widgetVar="batalha_dlg" width="300" style="padding:20px;" minHeight="100">
+                 <h:inputHidden value="#{controle_busca_aventura.batalha.estado}" converter="generic" id="hiddenId" />
+                    <p:outputLabel for="nome_batalha" value="Insira o nome da Batalha: " style="font-weight: bold;"/>
+                    <p:inputText id="nome_batalha" class="input_a" required="true"  value="#{controle_busca_aventura.batalha.nome}"/>
+                    <p:tooltip id="nome_tooltip" for="nome_batalha" value="Nomeie esta batalha" position="top"/>
+                    
+                    <p:outputLabel for="data_inicio" value="Data de Início: " style="font-weight: bold;" />
+                    <p:calendar mindate="#{controle_busca_aventura.getMinDate()}" 
+                                maxdate="#{controle_busca_aventura.getMaxDate()}" id="data_inicio" required="true"  locale="pt" class="input_a" value="#{controle_busca_aventura.batalha.data_inicio}" />
+                    <p:tooltip id="data_inicio_tooltip" for="data_inicio" value="Indique quando essa batalha deve iniciar" position="top"/>
+                    
+                    <p:outputLabel for="data_final" value="Data Final: " style="font-weight: bold;" />
+                    <p:calendar mindate="#{controle_busca_aventura.getMinDate()}" 
+                                maxdate="#{controle_busca_aventura.getMaxDate()}" id="data_final" required="true"  locale="pt" class="input_a" value="#{controle_busca_aventura.batalha.data_finalizacao}" />
+                    <p:tooltip id="data_final_tooltip" for="data_final" value="Indique quando essa batalha deve ser finalizada" position="top"/>
+                    <center>
+                    <p:commandButton value="Criar" 
+                                     id="criar_batalha"  
+                                     process="@form"
+                                     update="form_batalha"
+                                     oncomplete="PF('batalha_dlg').hide()"
+                                     action="#{controle_busca_aventura.criarBatalha()}"
+                                     style="background:#050!important;">
+                        <p:confirm header="Tem certeza?" message="Deseja criar essa batalha?" icon="ui-icon-alert" />
+                    </p:commandButton>  
+                    </center>               
+            </p:dialog>
+         </h:form> 
+    </p:fieldset>
+</ui:define>
+</ui:composition>

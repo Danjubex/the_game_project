@@ -1,0 +1,184 @@
+ <ui:composition template="template.xhtml"
+                 xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:ui="http://java.sun.com/jsf/facelets">
+ 
+ <ui:define name="corpo-central">
+     
+
+     <p:fieldset legend="Aventuras" style="margin-bottom:20px">
+	<h:form style="padding: 20px;" id="form">
+            
+            <p:growl id="mensagem_cadastro" life="5000" showDetail="true"/> 
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+            
+            
+            <p:fieldset legend="Aventuras Concluidas" 
+                        style="margin-bottom:20px">
+                <p:accordionPanel value="#{controle_busca_aventura.aventuras_concluidas}" var="aventura" >
+                    
+                        <p:tab disabled="#{!controle_busca_aventura.isDone(aventura)}"
+                               rendered="#{controle_busca_aventura.isDone(aventura)}"
+                               title="#{aventura.nome}">
+                                <div style="background:url('img/painel_aventuras/scroll.png');
+                                    background-repeat: no-repeat;
+                                    background-size: 100% 100%;
+                                    padding-top: 140px;
+                                    padding-left: 180px;
+                                    padding-bottom: 180px;
+                                    padding-right: 180px;">
+                             <center>
+                                <div class="title_paper" 
+                                     style="margin-left: -180px;margin-right: -180px;
+                                        color:#000;">
+                                    #{aventura.nome}
+                                </div> 
+
+                            <div class="title_a" 
+                                 style="font-size: 12px;color:#555;margin-bottom: 20px;"> #{aventura.descricao} </div>
+                            </center>
+
+                            <div class="title_c">Criado em: </div>
+                            <div style="margin-top: -5px;">
+                                <h:outputText class="title_d" value="#{aventura.data_criacao}">
+                                  <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                                </h:outputText> 
+                            
+                            </div>
+                            <div class="title_c">Criado por: </div>
+                            <div class="title_d"> #{aventura.personagem_criador.nome} </div>
+
+                            <div class="title_c">Deve ser iniciada em: </div>
+                            <div style="margin-top: -5px;">
+                                <h:outputText class="title_d" 
+                                              style="color:#{controle_busca_aventura.initColorControl(aventura.data_inicio)};"
+                                              value="#{aventura.data_inicio}">
+                                  <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                                </h:outputText> 
+                            
+                            </div>
+                            <div class="title_c">Deve ser finalizada em: </div>
+                            <div style="margin-top: -5px;">
+                                <h:outputText class="title_d"
+                                              style="color:#{controle_busca_aventura.endColorControl(aventura.data_finalizacao)}"
+                                              value="#{aventura.data_finalizacao}">
+                                  <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                                </h:outputText> 
+                            
+                            </div>
+                            <div class="title_c">XP: </div>
+                            <div class="title_d"> #{aventura.xp} </div>
+
+                            <div class="title_c">Dificuldade: </div>
+                            <div class="title_d"> #{aventura.level.nome} </div>
+
+                            <center style="width:100%;margin:5px;"  id="atributos">
+
+                                  <i style="font-size: 20px;float:left;color:#000;margin-top: -5px;" class="ra ra-muscle-up"></i>
+                                    <div class="title_rosa">FOR: </div>
+                                    <div style="color:#{controle_busca_aventura.atributoColor(aventura.forca_necessaria,1)}!important;" 
+                                         class="title_e">#{aventura.forca_necessaria}</div>
+
+                                    <i style="font-size: 20px;float:left;color:#000;margin-top: -5px;" class="ra ra-player-dodge"></i>
+                                    <div class="title_rosa">AGI: </div>
+                                    <div style="color:#{controle_busca_aventura.atributoColor(aventura.agilidade_necessaria,2)};" 
+                                         class="title_e">#{aventura.agilidade_necessaria}</div>
+
+                                    <i style="font-size: 20px;float:left;color:#000;margin-top: -5px;" class="ra ra-player-pyromaniac"></i>
+                                    <div class="title_rosa">CON: </div>
+                                    <div style="color:#{controle_busca_aventura.atributoColor(aventura.constituicao_necessario,3)};" 
+                                          class="title_e">#{aventura.constituicao_necessario}</div>
+
+                                    <i style="font-size: 20px;float:left;color:#000;margin-top: -5px;" class="ra ra-player-shot"></i>
+                                    <div class="title_rosa">RES: </div>
+                                    <div style="color:#{controle_busca_aventura.atributoColor(aventura.resistencia_necessaria,4)};" 
+                                         class="title_e">#{aventura.resistencia_necessaria}</div>
+                                         
+                                    <i style="font-size: 20px;float:left;color:#000;margin-top: -5px;" class="ra ra-crystal-ball"></i>
+                                    <div class="title_rosa">INT: </div>
+                                    <div style="color:#{controle_busca_aventura.atributoColor(aventura.inteligencia_necessaria,5)};" 
+                                         class="title_e">#{aventura.inteligencia_necessaria}</div>     
+
+                                    <i style="font-size: 20px;float:left;color:#000;margin-top: -5px;" class="ra ra-aware"></i>
+                                    <div class="title_rosa">SAB: </div>
+                                    <div style="color:#{controle_busca_aventura.atributoColor(aventura.sabedoria_necessaria,5)};" 
+                                         class="title_e">#{aventura.sabedoria_necessaria}</div>
+
+                                    <i style="font-size: 20px;float:left;color:#000;margin-top: -5px;" class="ra ra-double-team"></i>
+                                    <div class="title_rosa">CAR: </div>
+                                    <div style="color:#{controle_busca_aventura.atributoColor(aventura.carisma_necessario,6)};" 
+                                         class="title_e">#{aventura.carisma_necessario}</div>
+ 
+                                    <div class="correcao" style="width:100%;height:20px;"></div>
+                             
+                            </center>
+                            <p:separator />
+ 
+                                   <h4 class="title_b2"> Armas necessárias:</h4>
+                                    <p:repeat value="#{aventura.armas}" var="arma">
+                                       <i style="font-size: 20px;float:left;color:#000;margin-top: -5px;" class="ra  ra-perspective-dice-six"></i>
+                                       <h:outputText class="title_c" value="#{arma.nome}" />
+                                    </p:repeat>
+                             <div class="correcao" style="width:100%;height:50px;"></div>
+                                  
+                            <p:separator />
+ 
+                            <h4 class="title_b2"> Perícias necessárias:</h4>
+                                    <p:repeat value="#{aventura.pericias}" var="pericia">
+                                          <i style="font-size: 20px;float:left;color:#000;margin-top: -5px;" class="ra  ra-perspective-dice-six"></i>
+                                          <h:outputText class="title_c" value="#{pericia.nome}" />
+                                     </p:repeat>
+                            <div class="correcao" style="width:100%;height:50px;"></div>
+                             
+                            <p:separator />
+ 
+                            <h4 class="title_b2"> Raças indicadas:</h4>
+                                    <p:repeat value="#{aventura.racas}" var="raca">
+                                        <i style="font-size: 20px;float:left;color:#000;margin-top: -5px;" class="ra  ra-perspective-dice-six"></i>
+                                        <h:outputText class="title_c" value="#{raca.nome}" />
+                                     </p:repeat>
+                             <div class="correcao" style="width:100%;height:50px;"></div>
+                             
+                            <p:separator />
+                            
+                            <h4 class="title_b2"> Classes recomendadas:</h4>
+                                    <p:repeat value="#{aventura.classes}" var="classe">
+                                        <i style="font-size: 20px;float:left;color:#000;margin-top: -5px;" class="ra  ra-perspective-dice-six"></i>
+                                        <h:outputText class="title_c" value="#{classe.nome}" />
+                                    </p:repeat>
+                             <div class="correcao" style="width:100%;height:50px;"></div>
+                             
+                            <p:separator />
+ 
+                            <h4 class="title_b2">Tesouros:</h4>
+                                    <p:repeat value="#{aventura.tesouros}" var="tesouro">
+                                        <i style="font-size: 20px;float:left;color:#000;margin-top: -5px;" class="ra  ra-perspective-dice-six"></i>
+                                        <h:outputText class="title_c" value="#{tesouro.nome}" />
+                                     </p:repeat> 
+                             <div class="correcao" style="width:100%;height:50px;"></div>
+                             
+                            <p:separator />
+                                
+                            <h2 style="margin-bottom: 0;color:#000; ">Heróis da Aventura:</h2> 
+                            
+                                <div style="color:#000;display:inline;font-weight: bold;font-size: 30px;">
+                                         #{controle_busca_aventura.getAventureiros(aventura)}
+                                </div>
+                    </div>
+
+                        </p:tab>
+                    
+                </p:accordionPanel>   
+                
+            
+            </p:fieldset>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+	</h:form>
+    </p:fieldset>
+</ui:define>
+</ui:composition>

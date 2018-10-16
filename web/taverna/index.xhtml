@@ -1,0 +1,241 @@
+ <ui:composition template="template.xhtml"
+                 xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:ui="http://java.sun.com/jsf/facelets">
+ 
+ <ui:define name="corpo-central">
+     <p:fieldset legend="Criar Nova Aventura" style="margin-bottom:20px">
+	<h:form style="padding: 20px;" id="form">
+            
+            <p:growl id="mensagem_cadastro" life="5000" showDetail="true"/> 
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+        <h:panelGrid columns="3" cellpadding="5">  
+           
+                    <h:inputHidden value="#{controle_aventura.aventura.estado}" converter="generic" id="hiddenId" />
+                    <p:outputLabel for="nome_aventura" value="Insira o nome da Aventura: " style="font-weight: bold;"/>
+                    <p:inputText id="nome_aventura" class="input_a" required="true"  value="#{controle_aventura.aventura.nome}"/>
+                    <p:tooltip id="nome_tooltip" for="nome_aventura" value="Nomeie esta aventura" position="top"/>
+             
+
+                    <p:outputLabel for="descricao_aventura" value="Descreva a aventura: " style="font-weight: bold;"/>
+                    <p:inputTextarea id="descricao_aventura" class="input_a" rows="6" style="width: 100%" value="#{controle_aventura.aventura.descricao}"/>
+                    <p:tooltip id="descricao_tooltip" for="descricao_aventura" value="Dê informações importantes sobre a aventura" position="top"/>
+                    
+                    <p:outputLabel for="data_inicio" value="Data de Início: " style="font-weight: bold;" />
+                    <p:calendar id="data_inicio" required="true"  locale="pt" class="input_a" value="#{controle_aventura.aventura.data_inicio}" >
+                        <p:ajax event="dateSelect" listener="#{controle_aventura.initialDateChange}" update="xp_aventura" />
+                    </p:calendar>
+                    <p:tooltip id="data_inicio_tooltip" for="data_inicio" value="Indique quando essa aventura deve iniciar" position="top"/>
+
+                    <p:outputLabel for="data_final" value="Data do Fim: " style="font-weight: bold;" />
+                    <p:calendar id="data_final" required="true"  locale="pt" class="input_a" value="#{controle_aventura.aventura.data_finalizacao}" >
+                        <p:ajax event="dateSelect" listener="#{controle_aventura.finalDateChange}" update="xp_aventura" />
+                    </p:calendar>
+                    <p:tooltip id="data_final_tooltip" for="data_final" value="Indique quando essa aventura deve terminar" position="top"/>
+
+        
+        <p:outputLabel for="mundo_aventura" value="Selecione o mundo: " style="font-weight: bold;"/>
+        <p:selectOneMenu class="many_input" id="mundo_aventura" converter="generic" value="#{controle_aventura.aventura.mundo}">
+            <f:selectItems value="#{controle_aventura.mundos}" var ="mundos" itemValue="#{mundos}" itemLabel="#{mundos.nome}"/>
+        </p:selectOneMenu>
+        <p:tooltip id="mundo_tooltip" for="mundo_aventura" value="Indique qual é o ambiente principal dessa aventura" position="top"/>
+             
+        <p:outputLabel for="classe_aventura" value="Selecione as classes: " style="font-weight: bold;"/>
+        <p:selectManyMenu class="many_input" id="classe_aventura" converter="generic" value="#{controle_aventura.aventura.classes}"
+                          showCheckbox="true">
+            <f:selectItems value="#{controle_aventura.classes}" var ="classes" itemValue="#{classes}" itemLabel="#{classes.nome}"/>
+ 
+        </p:selectManyMenu>
+        <p:tooltip id="classe_tooltip" for="classe_aventura" value="Indique quais são as classes recomendadas para essa aventura (Segure CTRL para escolher várias)" position="top"/>
+     
+        <p:outputLabel for="raca_aventura" value="Selecione as raças: " style="font-weight: bold;"/>
+        <p:selectManyMenu class="many_input" id="raca_aventura" converter="generic" value="#{controle_aventura.aventura.racas}"
+                          showCheckbox="true">
+            <f:selectItems value="#{controle_aventura.racas}" var ="racas" itemValue="#{racas}" itemLabel="#{racas.nome}"/>
+ 
+        </p:selectManyMenu>
+        <p:tooltip id="raca_tooltip" for="raca_aventura" value="Indique quais são as raças recomendadas para essa aventura (Segure CTRL para escolher várias)" position="top"/>
+     
+        <p:outputLabel for="pericias_aventura" value="Selecione a(s) perícias(s): " style="font-weight: bold;"/>
+        <p:selectManyMenu class="many_input" id="pericias_aventura" showCheckbox="true" var="v" converter="generic" value="#{controle_aventura.aventura.pericias}">
+            <f:selectItems value="#{controle_aventura.pericias}" var ="pericias" itemValue="#{pericias}" itemLabel="#{pericias.nome}"/>
+            <p:column>
+                <h:outputText value="#{v.nome}" />
+            </p:column>
+            <p:column>
+                <h:outputText value="#{v.descricao}" />
+            </p:column>
+        </p:selectManyMenu>
+        <p:tooltip id="pericias_tooltip" for="pericias_aventura" value="Indique quais são as perícias necessárias para essa aventura" position="top"/>
+     
+        <p:outputLabel for="noplayablechar_aventura" value="Selecione o(s) NPC(s): " style="font-weight: bold;"/>
+        <p:selectManyMenu class="many_input" id="noplayablechar_aventura" showCheckbox="true" var="v" converter="generic" value="#{controle_aventura.aventura.npcs}">
+            <f:selectItems value="#{controle_aventura.noplayablechars}" var ="npcs" itemValue="#{npcs}" itemLabel="#{npcs.nome}"/>
+            <p:column>
+                <h:outputText value="#{v.nome}" />
+            </p:column>|
+            <p:column>
+                <h:outputText value="#{v.classe}" />
+            </p:column>
+        </p:selectManyMenu>
+        <p:tooltip id="npcs_tooltip" for="noplayablechar_aventura" value="Indique quais são os personagens de apoio para a aventura" position="top"/>
+        
+        <p:outputLabel for="tesouro_aventura" value="Selecione o(s) tesouro(s): " style="font-weight: bold;"/>
+        <p:selectManyMenu class="many_input" id="tesouro_aventura" showCheckbox="true" var="v" converter="generic" value="#{controle_aventura.aventura.tesouros}">
+            <f:selectItems value="#{controle_aventura.tesouros}" var ="npcs" itemValue="#{tesouros}" itemLabel="#{tesouros.nome}"/>
+            <p:column>
+                <h:outputText value="#{v.nome}" />
+            </p:column>
+            <p:column>
+                <h:outputText value="#{v.descricao}" />
+            </p:column>
+        </p:selectManyMenu>
+        <p:tooltip id="tesouro_tooltip" for="tesouro_aventura" value="Indique quais são os tesouros recebidos ao término da aventura" position="top"/>
+        
+        <p:outputLabel for="armas_aventura" value="Selecione a(s) arma(s): " style="font-weight: bold;"/>
+        <p:selectManyMenu class="many_input" id="armas_aventura" showCheckbox="true" var="v" converter="generic" value="#{controle_aventura.aventura.armas}">
+            <f:selectItems value="#{controle_aventura.armas}" var ="armas" itemValue="#{armas}" itemLabel="#{armas.nome}"/>
+            <p:column>
+                <h:outputText value="#{v.nome}" />
+            </p:column>
+            <p:column>
+                <h:outputText value="#{v.descricao}" />
+            </p:column>
+        </p:selectManyMenu>
+        <p:tooltip id="armas_tooltip" for="armas_aventura" value="Indique quais são as armas e recursos necessários para essa aventura" position="top"/>
+     
+        
+        <p:outputLabel for="forca_necessaria" value="Selecione a FORÇA necessária: " style="font-weight: bold;"/>
+        <p:selectOneMenu class="many_input" id="forca_necessaria" value="#{controle_aventura.aventura.forca_necessaria}">
+            <f:selectItem itemLabel="Muito Pouca (-)" itemValue="1" />
+            <f:selectItem itemLabel="Muito Pouca" itemValue="2" />
+            <f:selectItem itemLabel="Pouca (-)" itemValue="3" />
+            <f:selectItem itemLabel="Pouca" itemValue="4" />
+            <f:selectItem itemLabel="Normal (-)" itemValue="5" />
+            <f:selectItem itemLabel="Normal" itemValue="6" />
+            <f:selectItem itemLabel="Muita (-)" itemValue="7" />
+            <f:selectItem itemLabel="Muita" itemValue="8" />
+            <f:selectItem itemLabel="Bastante (-)" itemValue="9" />
+            <f:selectItem itemLabel="Bastante" itemValue="10" />
+        </p:selectOneMenu>
+        <p:tooltip id="toolTipForca" for="forca_necessaria" value="Indique o quanto de esforço, movimentação e trabalhos manuais são necessários para realizar essa aventura" position="top"/>
+        
+        <p:outputLabel for="agilidade_necessaria" value="Selecione a AGILIDADE necessária: " style="font-weight: bold;"/>
+        <p:selectOneMenu class="many_input" id="agilidade_necessaria" value="#{controle_aventura.aventura.agilidade_necessaria}">
+            <f:selectItem itemLabel="Muito Pouca (-)" itemValue="1" />
+            <f:selectItem itemLabel="Muito Pouca" itemValue="2" />
+            <f:selectItem itemLabel="Pouca (-)" itemValue="3" />
+            <f:selectItem itemLabel="Pouca" itemValue="4" />
+            <f:selectItem itemLabel="Normal (-)" itemValue="5" />
+            <f:selectItem itemLabel="Normal" itemValue="6" />
+            <f:selectItem itemLabel="Muita (-)" itemValue="7" />
+            <f:selectItem itemLabel="Muita" itemValue="8" />
+            <f:selectItem itemLabel="Bastante (-)" itemValue="9" />
+            <f:selectItem itemLabel="Bastante" itemValue="10" />
+        </p:selectOneMenu>
+        <p:tooltip id="toolTipAgilidade" for="agilidade_necessaria" value="Indique a velocidade de reação e adaptação a mudanças necessárias para realizar essa aventura" position="top"/>
+        
+         <p:outputLabel for="constituicao_necessaria" value="Selecione a CONSTITUIÇÃO necessária: " style="font-weight: bold;"/>
+        <p:selectOneMenu class="many_input" id="constituicao_necessaria" value="#{controle_aventura.aventura.constituicao_necessario}">
+            <f:selectItem itemLabel="Muito Pouca (-)" itemValue="1" />
+            <f:selectItem itemLabel="Muito Pouca" itemValue="2" />
+            <f:selectItem itemLabel="Pouca (-)" itemValue="3" />
+            <f:selectItem itemLabel="Pouca" itemValue="4" />
+            <f:selectItem itemLabel="Normal (-)" itemValue="5" />
+            <f:selectItem itemLabel="Normal" itemValue="6" />
+            <f:selectItem itemLabel="Muita (-)" itemValue="7" />
+            <f:selectItem itemLabel="Muita" itemValue="8" />
+            <f:selectItem itemLabel="Bastante (-)" itemValue="9" />
+            <f:selectItem itemLabel="Bastante" itemValue="10" />
+        </p:selectOneMenu>
+        <p:tooltip id="toolTipConstituicao" for="constituicao_necessaria" value="Indique a capacidade de se manter firme nas decisões necessárias para realizar essa aventura" position="top"/>
+        
+         <p:outputLabel for="resistencia_necessaria" value="Selecione a RESISTÊNCIA necessária: " style="font-weight: bold;"/>
+        <p:selectOneMenu class="many_input" id="resistencia_necessaria" value="#{controle_aventura.aventura.resistencia_necessaria}">
+            <f:selectItem itemLabel="Muito Pouca (-)" itemValue="1" />
+            <f:selectItem itemLabel="Muito Pouca" itemValue="2" />
+            <f:selectItem itemLabel="Pouca (-)" itemValue="3" />
+            <f:selectItem itemLabel="Pouca" itemValue="4" />
+            <f:selectItem itemLabel="Normal (-)" itemValue="5" />
+            <f:selectItem itemLabel="Normal" itemValue="6" />
+            <f:selectItem itemLabel="Muita (-)" itemValue="7" />
+            <f:selectItem itemLabel="Muita" itemValue="8" />
+            <f:selectItem itemLabel="Bastante (-)" itemValue="9" />
+            <f:selectItem itemLabel="Bastante" itemValue="10" />
+        </p:selectOneMenu>
+        <p:tooltip id="toolTipResistencia" for="resistencia_necessaria" value="Indique o nível de concentração, determinação e foco que são necessários para realizar essa aventura" position="top"/>
+         
+        <p:outputLabel for="inteligencia_necessaria" value="Selecione a INTELIGÊNCIA necessária: " style="font-weight: bold;"/>
+        <p:selectOneMenu class="many_input" id="inteligencia_necessaria" value="#{controle_aventura.aventura.inteligencia_necessaria}">
+            <f:selectItem itemLabel="Muito Pouca (-)" itemValue="1" />
+            <f:selectItem itemLabel="Muito Pouca" itemValue="2" />
+            <f:selectItem itemLabel="Pouca (-)" itemValue="3" />
+            <f:selectItem itemLabel="Pouca" itemValue="4" />
+            <f:selectItem itemLabel="Normal (-)" itemValue="5" />
+            <f:selectItem itemLabel="Normal" itemValue="6" />
+            <f:selectItem itemLabel="Muita (-)" itemValue="7" />
+            <f:selectItem itemLabel="Muita" itemValue="8" />
+            <f:selectItem itemLabel="Bastante (-)" itemValue="9" />
+            <f:selectItem itemLabel="Bastante" itemValue="10" />
+        </p:selectOneMenu>
+        <p:tooltip id="toolTipInteligencia" for="inteligencia_necessaria" value="Indique o nível de conhecimento multidisciplinar e capacidade de aprendizado que são necessários para realizar essa aventura" position="top"/>
+         
+        
+        <p:outputLabel for="sabedoria_necessaria" value="Selecione a SABEDORIA necessária: " style="font-weight: bold;"/>
+        <p:selectOneMenu class="many_input" id="sabedoria_necessaria" value="#{controle_aventura.aventura.sabedoria_necessaria}">
+            <f:selectItem itemLabel="Muito Pouca (-)" itemValue="1" />
+            <f:selectItem itemLabel="Muito Pouca" itemValue="2" />
+            <f:selectItem itemLabel="Pouca (-)" itemValue="3" />
+            <f:selectItem itemLabel="Pouca" itemValue="4" />
+            <f:selectItem itemLabel="Normal (-)" itemValue="5" />
+            <f:selectItem itemLabel="Normal" itemValue="6" />
+            <f:selectItem itemLabel="Muita (-)" itemValue="7" />
+            <f:selectItem itemLabel="Muita" itemValue="8" />
+            <f:selectItem itemLabel="Bastante (-)" itemValue="9" />
+            <f:selectItem itemLabel="Bastante" itemValue="10" />
+        </p:selectOneMenu>
+        <p:tooltip id="toolTipSabedoria" for="sabedoria_necessaria" value="Indique o nível de segurança e confiança necessários para realizar essa aventura" position="top"/>
+         
+        <p:outputLabel for="carisma_necessario" value="Selecione o CARISMA necessário: " style="font-weight: bold;"/>
+        <p:selectOneMenu class="many_input" id="carisma_necessario" value="#{controle_aventura.aventura.carisma_necessario}">
+            <f:selectItem itemLabel="Muito Pouca (-)" itemValue="1" />
+            <f:selectItem itemLabel="Muito Pouca" itemValue="2" />
+            <f:selectItem itemLabel="Pouca (-)" itemValue="3" />
+            <f:selectItem itemLabel="Pouca" itemValue="4" />
+            <f:selectItem itemLabel="Normal (-)" itemValue="5" />
+            <f:selectItem itemLabel="Normal" itemValue="6" />
+            <f:selectItem itemLabel="Muita (-)" itemValue="7" />
+            <f:selectItem itemLabel="Muita" itemValue="8" />
+            <f:selectItem itemLabel="Bastante (-)" itemValue="9" />
+            <f:selectItem itemLabel="Bastante" itemValue="10" />
+        </p:selectOneMenu>
+        <p:tooltip id="toolTipCarisma" for="carisma_necessario" value="Indique o nível da capacidade de venda e convencimento necessários para realizar essa aventura" position="top"/>
+        
+        <p:outputLabel for="level_aventura" style="font-weight: bold;" value="Nível de Dificuldade:" />
+        <p:selectOneRadio class="many_input" id="level_aventura" value="#{controle_aventura.aventura.level}" converter="generic">
+            <p:ajax event="change" process="@form" update="xp_aventura" listener="#{controle_aventura.recalcular_xp()}"/>
+            <f:selectItems value="#{controle_aventura.levels}" var ="levels" itemValue="#{levels}" itemLabel="#{levels.nome}"/>                            
+        </p:selectOneRadio>
+         <p:tooltip id="toolTipXp" for="level_aventura" value="Reduz ou amplia o XP da aventura" position="top"/>
+              
+        </h:panelGrid>
+            <div class="title_a" style="float:left;margin-left:18px;">XP da aventura: </div> <p:outputLabel class="title_b" id ="xp_aventura" value="#{controle_aventura.aventura.xp} " style="margin-top:-15px;font-size:35px;font-weight: bold;"/>   
+                            
+            <div class="correcao" style="width:100%;height:50px;"></div>
+            <center>
+                <p:commandButton value="Criar" 
+                                         update="form" 
+                                         process="@form"
+                                         actionListener="#{controle_aventura.cadastrar()}" 
+                                         class="ra  ra-perspective-dice-six" 
+                                         style="margin-top:10px;"/>
+                
+            </center>
+            
+
+	</h:form>
+    </p:fieldset>
+</ui:define>
+</ui:composition>

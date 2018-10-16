@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:ui="http://java.sun.com/jsf/facelets">
+        
+    <h:head>
+        <title>The Game Project</title>
+                <link rel="stylesheet" href="../taverna/css/rpg-awesome.css"/>
+        <script type="text/javascript">
+        //<![CDATA[
+            PrimeFaces.locales['pt'] = {
+                closeText: 'Fechar',
+                prevText: 'Anterior',
+                nextText: 'Próximo',
+                currentText: 'Começo',
+                monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+                dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+                dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+                weekHeader: 'Semana',
+                firstDay: 0,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: '',
+                timeOnlyTitle: 'Só Horas',
+                timeText: 'Tempo',
+                hourText: 'Hora',
+                minuteText: 'Minuto',
+                secondText: 'Segundo',
+                ampm: false,
+                month: 'Mês',
+                week: 'Semana',
+                day: 'Dia',
+                allDayText: 'Todo o Dia'
+            };
+            //]]>
+        </script>
+
+        <style>
+        @font-face {
+            font-family: pergaminho;
+            src: url(fonts/pergaminho.otf);
+        }
+        .input_a .ui-inputfield
+        {
+            font-weight: bold!important;
+            border:1px solid #313d46!important;
+            color:#6b8799!important;
+            background-color: #273138!important;
+            width: 100%!important;
+            font-size: 12px;
+        }
+        .ui-inputfield
+        {
+            font-weight: bold!important;
+            border:1px solid #313d46!important;
+            color:#6b8799!important;
+            background-color: #273138!important;
+            width: 100%!important;
+            font-size: 12px;
+        }
+        .input_a:focus
+        {
+            outline: none !important;
+            border:1px solid #dd163b!important;
+            box-shadow: 0 0 10px #dd163b!important;
+
+        }
+        
+        .many_input
+        {
+            
+            width:100%;font-size: 12px;
+        }
+        .ui-state-active
+        {
+            background: #dd163b!important;
+           
+        }
+        .ui-state-highlight
+        {
+            color: #fff!important;
+            background: #555!important;
+            font-weight: bold!important;
+        }
+        .ui-icon
+        {
+            display: none;
+        }
+       .ui-inputfield
+       {
+           box-shadow: none!important;
+       }
+       body{padding-left: 80px;padding-right: 80px;background-color: #222;color:#fff}
+       .title_a
+        {
+            color:#fff;
+            font-size: 15px;
+            font-weight: bold;
+        }
+        .title_b
+        {
+            color:#dd163b!important;
+            text-decoration: none!important;
+            font-size: 15px;
+            font-weight: bold;
+            float: left;
+            margin: 0;
+        }
+        .title_b2
+        {
+            color:#dd163b!important;
+            text-decoration: none!important;
+            font-size: 15px;
+            font-weight: bold;
+            margin: 0;
+        }
+         .title_c
+        {
+            float: left;
+            margin-right: 5px;
+            color:#000;
+            font-size: 12px;
+            font-weight: bold;
+        }
+          .title_d
+        {
+            
+            color:#666;
+            font-size: 12px;
+            font-weight: bold;
+        }
+          .title_e
+        {
+            float:left;
+            margin-right: 5px;
+            color:#666;
+            font-size: 12px;
+            font-weight: bold;
+        }
+          .title_rosa
+        {
+            float:left;
+            margin-right: 5px;
+            color:#dd163b;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .title_paper
+        {
+            color:#fff;
+            font-size: 55px;
+            font-weight: bold;  
+            font-family: pergaminho;
+            padding-top: 20px;
+            padding-left: 180px;
+            padding-right: 180px;
+        }
+        
+    .ui-state-disabled {
+        display: none;
+    }
+     .ui-fieldset-legend {
+        background:#273138!important;
+        color:#6b8799!important;
+    }
+    ui-icon-closethick
+    {
+        background-color: none!important;
+    }
+    input
+    {
+        background:#273138!important;
+        color:#6b8799!important;        
+    }
+    </style>
+    </h:head>
+    <h:body id = "body" style="background: #222;margin: 0px;padding: 0;font-size: 14px;color: #616161;">
+        
+        <p:layout fullPage="true">
+            
+                        
+            <p:layoutUnit  position="north" size="130" collapsible="false">
+                
+                <img src="img/tgp.png" width="250px" height="auto"/>
+                <h:form id="north" style="float:right;margin-right: 20px;">
+
+                    <p><img style="float:left;" src="img/avatar#{login.personagem.image_number}.png" width="80" /> Bem-vindo(a) <h:commandLink action="#{login.logout}" value="(Sair)"></h:commandLink> </p> <p:commandLink id="showUser" class="title_b">
+                        <h:outputText style="font-size:18px;" value="#{login.personagem.apelido} " /></p:commandLink>
+                   
+
+                        <p:overlayPanel appendToBody="true" for="showUser" hideEffect="fade" my="right top" at="right bottom">
+                            <p:panelGrid  columns="3" columnClasses="label,value">
+                                <f:facet name="header">
+                                    <img src="img/avatar#{login.personagem.image_number}.png" width="100" />
+                                </f:facet>    
+                                
+                                <h:outputText id="personagem_nome" class="title_b" value="Nome:" />
+                                <h:outputText class="title_a" value="#{login.personagem.nome}" />
+                                <p:tooltip id="personagem_nome_tooltip" for="personagem_nome" value="Nome Real do Personagem" position="top"/>
+
+                                <h:outputText id="personagem_pv" class="title_b" value="Pontos de Vida:" />
+                                <h:outputText class="title_a" value="#{login.personagem.pontos_de_vida}" />
+                                <p:tooltip id="personagem_pv_tooltip" for="personagem_pv" value="Crédito em horas que o jogador possui" position="top"/>
+                                
+                                <h:outputText id="personagem_pc" class="title_b" value="Pontos de cura:" />
+                                <h:outputText class="title_a" value="#{login.personagem.pontos_de_cura}" />
+                                <p:tooltip id="personagem_pc_tooltip" for="personagem_pc" value="Quantidade de créditos extras ganhas pelo personagem" position="top"/>
+                                
+                                <h:outputText id="personagem_ca" class="title_b" value="Classe de Armadura:" />
+                                <h:outputText class="title_a" value="#{login.personagem.classe_de_armadura}" />
+                                <p:tooltip id="personagem_ca_tooltip" for="personagem_ca" value="Limite de tolerância do personagem para ele perder pontos por atraso" position="top"/>
+                                
+                                <h:outputText id="personagem_iniciativa" class="title_b" value="Iniciativa:" />
+                                <h:outputText class="title_a" value="#{login.personagem.iniciativa}" />
+                                <p:tooltip id="personagem_iniciativa_tooltip" for="personagem_iniciativa" value="Tempo médio que o personagem leva pra entrar em uma aventura" position="top"/>
+                                
+                                <h:outputText id="personagem_forca" class="title_b" value="Força:" />
+                                <h:outputText class="title_a" value="#{login.personagem.forca}" />
+                                <p:tooltip id="personagem_forca_tooltip" for="personagem_forca" value="Capacidade de esforço, movimentação e realizar trabalhos manuais" position="top"/>
+                                
+                                <h:outputText id="personagem_agilidade" class="title_b" value="Agilidade:" />
+                                <h:outputText class="title_a" value="#{login.personagem.agilidade}" />
+                                <p:tooltip id="personagem_agilidade_tooltip" for="personagem_agilidade" value="Velocidade de reação e adaptação a mudanças " position="top"/>
+                                
+                                
+                                <h:outputText id="personagem_resistencia" class="title_b" value="Resistência:" />
+                                <h:outputText class="title_a" value="#{login.personagem.resistencia}" />
+                                <p:tooltip id="personagem_resistencia_tooltip" for="personagem_resistencia" value="Capacidade de manter-se firme" position="top"/>
+
+                                
+                                <h:outputText id="personagem_constituicao" class="title_b" value="Constituição:" />
+                                <h:outputText class="title_a" value="#{login.personagem.constituicao}" />
+                                <p:tooltip id="personagem_constituicao_tooltip" for="personagem_constituicao" value="Nível de concentração, determinação e foco" position="top"/>
+
+                                <h:outputText id="personagem_inteligencia" class="title_b" value="Inteligência:" />
+                                <h:outputText class="title_a" value="#{login.personagem.inteligencia}" />
+                                <p:tooltip id="personagem_inteligencia_tooltip" for="personagem_inteligencia" value="Nível de conhecimento multidisciplinar e capacidade de aprendizado" position="top"/>
+
+                                
+                                <h:outputText id="personagem_sabedoria" class="title_b" value="Sabedoria:" />
+                                <h:outputText class="title_a" value="#{login.personagem.sabedoria}" />
+                                <p:tooltip id="personagem_sabedoria_tooltip" for="personagem_sabedoria" value="Nível de segurança e confiança" position="top"/>
+
+                                
+                                <h:outputText id="personagem_carisma" class="title_b" value="Carisma:" />
+                                <h:outputText class="title_a" value="#{login.personagem.carisma}" />
+                                <p:tooltip id="personagem_carisma_tooltip" for="personagem_carisma" value="Nível da capacidade de venda e convencimento " position="top"/>
+
+                                <h:outputText id="personagem_xp" class="title_b" value="Xp: #{login.progressLevel}" />
+                                <p:progressBar value="#{login.progress}" labelTemplate="{value}%" displayOnly="true"/>
+                                <p:tooltip id="personagem_xp_tooltip" for="personagem_xp" value="Quantidade de horas de trabalho em projetos" position="top"/>
+
+                                <h:outputText id="personagem_pb" class="title_b" value="Pontos de Batalha:" />
+                                <h:outputText class="title_a" value="#{login.personagem.pontos_de_batalha}" />
+                                <p:tooltip id="personagem_pb_tooltip" for="personagem_pb" value="Quantidade de dias de atividades em projetos" position="top"/>
+   
+                                <h:outputText id="personagem_nivel" class="title_b" value="Nível:" />
+                                <h:outputText class="title_a" value="#{login.personagem.nivel}" />
+                                <p:tooltip id="personagem_nivel_tooltip" for="personagem_nivel" value="Nível de evolução do personagem" position="top"/>
+
+                            </p:panelGrid>
+                            
+                        </p:overlayPanel>
+                </h:form>
+                
+            </p:layoutUnit>
+            
+            <p:layoutUnit position="center">
+                
+
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+                <p:dialog appendTo="@(body)" widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                     <p:graphicImage value="img/loading1.gif" />
+                </p:dialog>
+                <ui:insert name="corpo-central"/>
+            </p:layoutUnit>
+
+            
+            <p:layoutUnit position="west" size="220" maxSize="220" 
+                collapsible="true" header="Ferramentas">
+             <h:form>
+                <p:menu>
+                         <p:submenu label="Gerenciar Aventuras">
+                             <p:menuitem value="Nova Aventura" ajax="true" url="index.xhtml"/>
+                             <p:menuitem value="Aventuras Disponíveis" ajax="true" url="escolher_aventura.xhtml"/>
+                             <p:menuitem value="Aventuras Concluídas" ajax="true" url="aventuras_concluidas.xhtml"/>
+                             <p:menuitem value="Minhas Aventuras" ajax="true" url="gerenciar_aventura.xhtml"/>
+                         </p:submenu>
+                </p:menu>
+             </h:form>
+            </p:layoutUnit>
+            
+            <p:layoutUnit position="south" size="60" collapsible="true" style="display:block; text-align:center;">
+                <h:outputText value="Desenvolvido por Danillo Xavier" />
+               
+                <br/>
+                &#169;<h:outputText value="Todos os Direitos Reservados #{controles_gerais.ano}" />
+            </p:layoutUnit>
+            
+        </p:layout>
+    </h:body>  
+</html>   

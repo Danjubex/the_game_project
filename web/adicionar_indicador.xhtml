@@ -1,0 +1,122 @@
+ <ui:composition template="template.xhtml"
+                 xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:ui="http://java.sun.com/jsf/facelets">
+ 
+ <ui:define name="corpo-central">
+    <h:form id="form">
+          
+     <p:fieldset id="painel_cadastro" legend="Adicionar Novo Indicador" style="margin-bottom:20px">
+        <p:growl id="mensagem_cadastro" life="5000" showDetail="true"/> 
+        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+        <br/>
+         
+         <h:panelGrid columns="2" cellpadding="5">
+          
+            <p:outputLabel value="Insira o nome do Indicador(*): " style="font-weight: bold;"/>
+            <p:inputText value="#{controle_indicador.indicador.nome}" size="43"/>
+           
+            <p:outputLabel value="Insira a unidade do Indicador(*): " style="font-weight: bold;"/>
+            <p:inputText value="#{controle_indicador.indicador.unidade_indicador}" size="43"/>
+           
+            <p:outputLabel value="Insira a descrição(*): " style="font-weight: bold;"/>
+            <p:panel style="margin-bottom:20px">
+                            <p:inputTextarea rows="8" 
+                                             value="#{controle_indicador.indicador.descricao}" 
+                                             cols="70" 
+                                             counter="contador_indicador_descricao_field" 
+                                             maxlength="1000" 
+                                             counterTemplate="{0} Caracteres Restantes." 
+                                             autoResize="false"
+                                             style="resize:none;"
+                                             />
+                            <br/>
+                            <h:outputText id="contador_indicador_descricao_field" style="font-weight: bold;"/>
+            </p:panel>
+           
+            <p:outputLabel value="Insira o setor de coleta no hospital: " style="font-weight: bold;"/>
+            <p:inputText value="#{controle_indicador.indicador.setor_de_coleta}" size="63"/>
+            
+            <p:outputLabel value="Insira o nome do chefe imediato: " style="font-weight: bold;"/>
+            <p:inputText value="#{controle_indicador.indicador.nome_chefe_imediato}" size="43"/>
+            
+            
+            <p:outputLabel value="Informe as metas factíveis de CURTO prazo (3 meses): " style="font-weight: bold;"/>
+            <p:panel style="margin-bottom:20px">
+                            <p:inputTextarea rows="8" 
+                                             value="#{controle_indicador.indicador.metas_curto_prazo}" 
+                                             cols="70" 
+                                             counter="contador_indicador_metas_field" 
+                                             maxlength="1000" 
+                                             counterTemplate="{0} Caracteres Restantes." 
+                                             autoResize="false"
+                                             style="resize:none;"
+                                             />
+                            <br/>
+                            <h:outputText id="contador_indicador_metas_field" style="font-weight: bold;"/>
+            </p:panel>
+            
+            <p:outputLabel value="Informe as metas factíveis de LONGO prazo (1 ano): " style="font-weight: bold;"/>
+            <p:panel style="margin-bottom:20px">
+                            <p:inputTextarea rows="8" 
+                                             value="#{controle_indicador.indicador.metas_longo_prazo}" 
+                                             cols="70" 
+                                             counter="contador_indicador_metas_longo_field" 
+                                             maxlength="1000" 
+                                             counterTemplate="{0} Caracteres Restantes." 
+                                             autoResize="false"
+                                             style="resize:none;"
+                                             />
+                            <br/>
+                            <h:outputText id="contador_indicador_metas_longo_field" style="font-weight: bold;"/>
+            </p:panel>
+            
+            <p:outputLabel value="Informe como será feita a análise: " style="font-weight: bold;"/>
+                <p:panel style="margin-bottom:20px"> 
+                    <p:inputTextarea rows="8" 
+                                             value="#{controle_indicador.indicador.metodo_de_analise}" 
+                                             cols="70" 
+                                             counter="contador_indicador_analise_field" 
+                                             maxlength="1000" 
+                                             counterTemplate="{0} Caracteres Restantes." 
+                                             autoResize="false"
+                                             style="resize:none;"
+                                             />
+                            <br/>
+                            <h:outputText id="contador_indicador_analise_field" style="font-weight: bold;"/>
+                </p:panel>
+            <p:outputLabel value="Fale sobre a importância deste indicador para o HU-UNIVASF: " style="font-weight: bold;"/>
+                <p:panel style="margin-bottom:20px"> 
+                            <p:inputTextarea rows="8" 
+                                             value="#{controle_indicador.indicador.importancia_do_indicador}" 
+                                             cols="70" 
+                                             counter="contador_indicador_importancia_field" 
+                                             maxlength="1000" 
+                                             counterTemplate="{0} Caracteres Restantes." 
+                                             autoResize="false"
+                                             style="resize:none;"
+                                             />
+                            <br/>
+                            <h:outputText id="contador_indicador_importancia_field" style="font-weight: bold;"/>
+                </p:panel>            
+            
+            <br/>
+            
+            <p:commandButton value="Cadastrar" 
+                                         update="form" 
+                                         actionListener="#{controle_indicador.cadastrar()}" 
+                                         styleClass="ui-priority-primary" 
+                                         icon="ui-icon-plusthick" 
+                                         style="margin-top:10px;"/>
+         </h:panelGrid>
+         
+         
+         
+         
+     </p:fieldset>
+    </h:form>
+          
+ </ui:define>
+</ui:composition>

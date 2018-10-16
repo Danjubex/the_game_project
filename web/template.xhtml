@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:ui="http://java.sun.com/jsf/facelets">
+        
+    <h:head>
+        <title>EBSERH - Sistema de Gestão de Resultados</title>
+        
+    </h:head>
+    <h:body style="margin: 0px;padding: 0;font-size: 14px;color: #616161;">
+        
+        <p:layout fullPage="true">
+            
+            
+            <p:layoutUnit position="center">
+                <ui:insert name="corpo-central"/>
+            </p:layoutUnit>
+            
+            <p:layoutUnit position="north" size="120" collapsible="true">
+                <p:graphicImage value="/EBSERH.png" 
+                                style="margin-left:20px;
+                                margin-bottom:20px;
+                                margin-top:5px; 
+                                margin-right: 40px"/>
+            </p:layoutUnit>
+            
+            <p:layoutUnit position="west" size="220" maxSize="220" 
+                collapsible="true" header="Ferramentas">
+             <h:form>
+                <p:menu>
+                         <p:submenu label="Gerenciar Indicadores">
+                             <p:menuitem value="Adicionar" url="/adicionar_indicador.xhtml" ajax="true"/>
+                             <p:menuitem value="Visualizar" ajax="true" url="/visualizar_indicadores.xhtml"/>
+                         </p:submenu>
+                         <p:submenu label="Gerenciar Usuários">
+                            <p:menuitem value="Novo Usuário" actionListener="#{menuView.save}"/>
+                             <p:menuitem value="Editar Usuário" actionListener="#{menuView.update}"/>
+                             <p:menuitem value="Visualizar Todos" actionListener="#{menuView.update}"/>
+                             <p:menuitem value="Buscar Usuário Específico" actionListener="#{menuView.update}"/>
+                         </p:submenu>
+                     </p:menu>
+             </h:form>
+            </p:layoutUnit>
+            
+            <p:layoutUnit position="south" size="50" collapsible="true" style="display:block; text-align:center;">
+                <h:outputText value="Hospital Universitário" />
+               
+                <br/>
+                &#169;<h:outputText value="Todos os Direitos Reservados #{controles_gerais.ano}" />
+            </p:layoutUnit>
+            
+        </p:layout>
+    </h:body>  
+</html>   
